@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gateway Panel</title>
+<link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-id">
+    <span class="lamp" id="lamp"></span>
+    <h1>Gateway</h1>
+    <span class="bar-sub" id="linkState">connecting</span>
+  </div>
+  <div class="bar-link">
+    <label for="base">gateway address</label>
+    <input id="base" type="text" spellcheck="false" autocomplete="off">
+    <button id="connect" class="btn btn-quiet" type="button">Connect</button>
+  </div>
+</header>
+
+<section class="rail">
+  <div class="rail-head">
+    <span class="legend">request path</span>
+    <span class="legend legend-right">every request from the network crosses these three gates</span>
+  </div>
+
+  <div class="track" id="track">
+    <div class="wire"></div>
+    <div class="lane">
+
+    <div class="stop stop-source" id="nodeIn">
+      <div class="stop-mark"></div>
+      <div class="stop-name">Network</div>
+      <div class="stop-note">clients on the wifi</div>
+    </div>
+
+    <div class="gate" id="gateKey" data-fail="401">
+      <div class="gate-frame">
+        <div class="gate-num">1</div>
+        <div class="gate-name">Identity</div>
+        <div class="gate-file">auth.js</div>
+      </div>
+      <div class="gate-fail">401 unknown key</div>
+    </div>
+
+    <div class="gate" id="gateToken" data-fail="429">
+      <div class="gate-frame">
+        <div class="gate-num">2</div>
+        <div class="gate-name">Allowance</div>
+        <div class="gate-file">rateLimiter.js</div>
+      </div>
+      <div class="gate-fail">429 no tokens left</div>
+    </div>
+
+    <div class="gate" id="gateRoute" data-fail="502">
+      <div class="gate-frame">
+        <div class="gate-num">3</div>
+        <div class="gate-name">Route</div>
+        <div class="gate-file">proxy.js</div>
+      </div>
+      <div class="gate-fail">502 backend down</div>
+    </div>
+
+    <div class="stop stop-sink" id="nodeOut">
+      <div class="stop-mark"></div>
+      <div class="stop-name">Backend</div>
+      <div class="stop-note">products and orders</div>
+    </div>
+
+    </div>
+    <div class="packets" id="packets"></div>
+    <div class="gutter"><span>stopped here, never reaches the backend</span></div>
+  </div>
+</section>
+
+<section class="grid">
+
+  <article class="panel panel-buckets">
+    <div class="panel-head">
+      <span class="legend">token buckets</span>
+      <span class="legend legend-right" id="refillNote">one token per client</span>
+    </div>
+    <div id="buckets" class="buckets"></div>
+    <div class="limit">
+      <label for="limit">limit</label>
+      <input id="limit" type="range" min="1" max="20" step="1" value="5">
+      <output id="limitOut">5</output>
+      <span class="limit-unit">requests per <span id="windowOut">60</span>s</span>
+      <button id="reset" class="btn btn-quiet" type="button">Clear counters</button>
+    </div>
+  </article>
+
+  <article class="panel panel-trace">
+    <div class="panel-head">
+      <span class="legend">traffic, last 60 seconds</span>
+      <span class="legend legend-right">bars up were forwarded, bars down were stopped</span>
+    </div>
+    <canvas id="trace" class="trace"></canvas>
+    <div class="tallies">
+      <div class="tally tally-pass">
+        <span class="tally-n" id="statAllowed">0</span>
+        <span class="tally-l">forwarded</span>
+      </div>
+      <div class="tally tally-deny">
+        <span class="tally-n" id="statRejected">0</span>
+        <span class="tally-l">stopped</span>
+      </div>
+      <div class="tally">
+        <span class="tally-n" id="statTotal">0</span>
+        <span class="tally-l">seen</span>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+<section class="panel panel-log">
+  <div class="panel-head">
+    <span class="legend">request log</span>
+    <span class="legend legend-right">newest first, last 50 kept in redis</span>
+  </div>
+  <div class="log-head">
+    <span>time</span><span>method</span><span>path</span><span>client</span><span>status</span><span>ms</span>
+  </div>
+  <div id="log" class="log"></div>
+</section>
+
+<script src="dashboard.js"></script>
+</body>
+</html>
