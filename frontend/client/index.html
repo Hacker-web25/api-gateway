@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Client Console</title>
+<link rel="stylesheet" href="client.css">
+</head>
+<body>
+<main class="shell">
+
+  <header class="bar">
+    <div class="bar-id">
+      <span class="lamp" id="lamp"></span>
+      <h1>Client</h1>
+      <span class="bar-sub" id="linkState">connecting</span>
+    </div>
+    <div class="bar-link">
+      <label for="base">gateway address</label>
+      <input id="base" type="text" spellcheck="false" autocomplete="off">
+      <button id="connect" class="btn btn-quiet" type="button">Connect</button>
+    </div>
+  </header>
+
+  <div class="split">
+
+    <section class="panel panel-send">
+      <div class="panel-head">
+        <span class="legend">your allowance</span>
+        <span class="legend legend-right" id="rateNote"></span>
+      </div>
+
+      <div class="meter">
+        <div class="pips" id="pips"></div>
+        <div class="meter-read">
+          <b id="remaining">-</b>
+          <span id="ofLimit">of 5 tokens left</span>
+        </div>
+        <div class="meter-next" id="nextToken">reading the gateway</div>
+      </div>
+
+      <div class="controls">
+        <button id="sendOne" class="btn btn-go" type="button">Send one request</button>
+        <button id="sendTen" class="btn" type="button">Send 10 at once</button>
+      </div>
+
+      <div class="outgoing">
+        <span class="legend">what goes on the wire</span>
+        <pre class="wire-text" id="wireText"></pre>
+      </div>
+
+      <div class="choices">
+        <div class="choice">
+          <span class="legend">sending as</span>
+          <div class="segs" id="keys"></div>
+        </div>
+        <div class="choice">
+          <span class="legend">asking for</span>
+          <div class="segs" id="calls"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel-answer" id="answerPanel">
+      <div class="panel-head">
+        <span class="legend">the gateway answered</span>
+        <span class="legend legend-right" id="timing"></span>
+      </div>
+
+      <div class="verdict">
+        <div class="code" id="code">--</div>
+        <div class="verdict-words">
+          <div class="reason" id="reason">No request sent yet</div>
+          <div class="plain" id="plain">Press send and watch what the gateway does with it.</div>
+        </div>
+      </div>
+
+      <div class="wait" id="wait" hidden>
+        <span class="wait-n" id="waitN">0</span>
+        <span class="wait-l">seconds until one token is back</span>
+      </div>
+
+      <dl class="headers">
+        <dt>X-RateLimit-Limit</dt><dd id="hLimit">-</dd>
+        <dt>X-RateLimit-Remaining</dt><dd id="hRemaining">-</dd>
+        <dt>Retry-After</dt><dd id="hRetry">-</dd>
+      </dl>
+
+      <pre class="body" id="body">-</pre>
+    </section>
+
+  </div>
+
+  <section class="panel panel-history">
+    <div class="panel-head">
+      <span class="legend">what you have sent</span>
+      <span class="legend legend-right" id="tally">nothing yet</span>
+    </div>
+    <div class="ticks" id="ticks"></div>
+  </section>
+
+</main>
+<script src="client.js"></script>
+</body>
+</html>

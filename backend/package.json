@@ -6,7 +6,9 @@
     "api": "node sample-api/server.js",
     "gateway": "node gateway/server.js",
     "sender": "node scripts/sender.js",
-    "test": "node --test --test-reporter=spec"
+    "test": "node --test --test-reporter=spec",
+    "client": "node ../frontend/serve.js client 5174",
+    "dashboard": "node ../frontend/serve.js dashboard 5173"
   },
   "engines": {
     "node": ">=20"
